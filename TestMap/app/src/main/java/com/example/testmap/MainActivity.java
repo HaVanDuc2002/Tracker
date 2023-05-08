@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     MQTTHelper mqttHelper;
     Button btnGetLocation,btnConnect,btnDisconnect;
     double Lat,Lng;
-    final String cmdTopic = "havanduc/feeds/cmd";
+    final String cmdTopic = "havanduc/feeds/command";
     final String command = "execute";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +92,9 @@ public class MainActivity extends AppCompatActivity {
 
                 if(mqttHelper.mqttAndroidClient.isConnected()){
                     Toast.makeText(MainActivity.this,"Connected!",Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Toast.makeText(MainActivity.this,"Can not connect!",Toast.LENGTH_LONG).show();
                 }
             }
         });

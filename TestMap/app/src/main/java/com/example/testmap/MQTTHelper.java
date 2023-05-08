@@ -22,9 +22,9 @@ public class MQTTHelper {
 
     final String clientID = "havanduc";
     final String username = "havanduc";
-    final String password = "aio_HOJT6180FIsCshFbcBvR7Kyvb0QM";
+    final String password = "aio_OLaS39k7uWUd4nwnehdNV2LHjxPQ";
     final String serverUri = "tcp://io.adafruit.com:1883";
-    final String getLocationTopic = "havanduc/feeds/send-location";
+    final String getLocationTopic = "havanduc/feeds/location";
     static boolean retained = false;
     static int qos = 0;
 
