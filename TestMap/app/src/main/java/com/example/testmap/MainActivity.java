@@ -26,6 +26,31 @@ public class MainActivity extends AppCompatActivity {
 
         /** Initialize MQTT and connect to your broker URI*/
         mqttHelper = new MQTTHelper(this);
+        mqttHelper.setCallback(new MqttCallbackExtended() {
+            @Override
+            public void connectComplete(boolean reconnect, String serverURI) {
+
+            }
+
+            @Override
+            public void connectionLost(Throwable cause) {
+
+            }
+
+            @Override
+            /** Convert message from bytes to String and then to double*/
+            public void messageArrived(String topic, MqttMessage message) throws Exception {
+                String msg = new String(message.getPayload());
+                String[] latlng = msg.split("-");
+                Lat = Double.parseDouble(latlng[0]);
+                Lng = Double.parseDouble(latlng[1]);
+            }
+
+            @Override
+            public void deliveryComplete(IMqttDeliveryToken token) {
+
+            }
+        });
 
         btnGetLocation =(Button) findViewById(R.id.btnGetLocation);
 
@@ -64,31 +89,6 @@ public class MainActivity extends AppCompatActivity {
                   and subscribe to get that location message */
                 mqttHelper.publishMessage(cmdTopic,command);
 
-                mqttHelper.setCallback(new MqttCallbackExtended() {
-                    @Override
-                    public void connectComplete(boolean reconnect, String serverURI) {
-
-                    }
-
-                    @Override
-                    public void connectionLost(Throwable cause) {
-
-                    }
-
-                    @Override
-                    /** Convert message from bytes to String and then to double*/
-                    public void messageArrived(String topic, MqttMessage message) throws Exception {
-                        String msg = new String(message.getPayload());
-                        String[] latlng = msg.split("-");
-                        Lat = Double.parseDouble(latlng[0]);
-                        Lng = Double.parseDouble(latlng[1]);
-                    }
-
-                    @Override
-                    public void deliveryComplete(IMqttDeliveryToken token) {
-
-                    }
-                });
 
                 if(mqttHelper.mqttAndroidClient.isConnected()){
                     Toast.makeText(MainActivity.this,"Connected!",Toast.LENGTH_LONG).show();

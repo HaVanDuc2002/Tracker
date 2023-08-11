@@ -22,35 +22,15 @@ public class MQTTHelper {
 
     final String clientID = "havanduc";
     final String username = "havanduc";
-    final String password = "aio_yyPm61NzRynYb0sE7DYSnqZq1KP5";
+    final String password = "aio_taHR20sq4HoBMalMJzBOm0llbvqw";
     final String serverUri = "tcp://io.adafruit.com:1883";
     final String getLocationTopic = "havanduc/feeds/location";
+    final String cmdTopic = "havanduc/feeds/command";
     static boolean retained = false;
     static int qos = 0;
 
     public MQTTHelper(Context context) {
         mqttAndroidClient = new MqttAndroidClient(context, serverUri, clientID, Ack.AUTO_ACK);
-        mqttAndroidClient.setCallback(new MqttCallbackExtended() {
-            @Override
-            public void connectComplete(boolean b, String s) {
-                Log.w("mqtt", s);
-            }
-
-            @Override
-            public void connectionLost(Throwable throwable) {
-
-            }
-
-            @Override
-            public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
-
-            }
-
-            @Override
-            public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
-
-            }
-        });
         connect();
     }
 

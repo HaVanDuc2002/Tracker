@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     final static int REQUEST_CODE = 100;
     static double Lat,Lng;
     MQTTHelper mqttHelper;
-    static final String getLocationTopic = "havanduc/feeds/send-location";
+    static final String getLocationTopic = "havanduc/feeds/location";
     static final String cmd = "execute";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         getLastLocation();
+        mqttHelper = new MQTTHelper(this);
     }
 
     /**
@@ -49,32 +50,7 @@ public class MainActivity extends AppCompatActivity {
                         Lng = location.getLongitude();
 
                          /** Initialize MQTT, connect to broker with your account and subscribe to command topic to get request */
-                        mqttHelper = new MQTTHelper(MainActivity.this);
-                        mqttHelper.setCallback(new MqttCallbackExtended() {
-                            @Override
-                            public void connectComplete(boolean reconnect, String serverURI) {
 
-                            }
-
-                            @Override
-                            public void connectionLost(Throwable cause) {
-
-                            }
-
-                            /** If get correct command, publish location to broker */
-                            @Override
-                            public void messageArrived(String topic, MqttMessage message) throws Exception {
-                                String command = new String(message.getPayload());
-                                if(command.equals(cmd)){
-                                    mqttHelper.publishMessage(getLocationTopic,Lat+"-"+Lng);
-                                }
-                            }
-
-                            @Override
-                            public void deliveryComplete(IMqttDeliveryToken token) {
-
-                            }
-                        });
                     }
                 }
             });

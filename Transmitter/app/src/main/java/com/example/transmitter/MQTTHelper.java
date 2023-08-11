@@ -19,15 +19,17 @@ public class MQTTHelper {
 
     final String clientID = "havanduc";
     final String username = "havanduc";
-    final String password = "aio_HOJT6180FIsCshFbcBvR7Kyvb0QM";
+    final String password = "aio_taHR20sq4HoBMalMJzBOm0llbvqw";
     final String serverUri = "tcp://io.adafruit.com:1883";
-    final String cmdTopic = "havanduc/feeds/cmd";
+    final String cmdTopic = "havanduc/feeds/command";
+    final String getLocationTopic = "havanduc/feeds/location";
     static boolean retained = false;
     static int qos = 0;
     final String cmd = "execute";
 
     public MQTTHelper(Context context) {
         mqttAndroidClient = new MqttAndroidClient(context, serverUri, clientID, Ack.AUTO_ACK);
+        connect();
         mqttAndroidClient.setCallback(new MqttCallbackExtended() {
             @Override
             public void connectComplete(boolean b, String s) {
@@ -40,8 +42,12 @@ public class MQTTHelper {
             }
 
             @Override
-            public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
-
+            public void messageArrived(String topic, MqttMessage mqttMessage) {
+                String command = new String(mqttMessage.getPayload());
+                Log.d("mqtt1",command);
+                if(command.equals(cmd)){
+                    publishMessage(getLocationTopic,MainActivity.Lat+"-"+MainActivity.Lng);
+                }
             }
 
             @Override
@@ -49,7 +55,6 @@ public class MQTTHelper {
 
             }
         });
-        connect();
     }
 
     public void setCallback(MqttCallbackExtended callback) {
